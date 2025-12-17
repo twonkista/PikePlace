@@ -1,0 +1,18 @@
+MVP Checklist:
+
+- User auth and wallet integration
+- USD to Points (currency name pending)
+- Golang Backend routing
+- Expo development
+- Database development
+- basic betting algorithm (parimeutel for now)
+- AI integration for bet permissions and database reading 
+
+**********First Steps**********
+- Dockerfile
+- Installing langugages and frameworks and partition the project into 3 folders 
+
+- Frontend
+    -Websockets
+- Backend
+    - AI integration lives here

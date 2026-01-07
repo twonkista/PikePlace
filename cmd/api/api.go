@@ -4,6 +4,9 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 type application struct {
@@ -14,11 +17,15 @@ type config struct {
 	addr string
 }
 
-func (app *application) mount() *http.ServeMux {
-	mux := http.NewServeMux()
+func (app *application) mount() http.Handler {
+	r := chi.NewRouter()
 
-	mux.HandleFunc("GET /v1/health", app.healthCheckHandler)
+	r.Use(middleware.Logger)
 
+	r.Route("v1", func(r chi.Router) {
+		r.Get("/health", app.healthCheckHandler)
+		r.Get("/list_pools", app.listPoolsHandler)
+	})
 	// list all pools
 	// list open pools (or list pools with status=open)
 	// list resolved pools (or status=resolved)
@@ -30,14 +37,14 @@ func (app *application) mount() *http.ServeMux {
 	// close pool (usually due to time expiration)
 	// resolve pools
 	// get pool by id
-	// get user by id
+	// authenticate user
 	// create user
 	// create user (admin only)
 
-	return mux
+	return r
 }
 
-func (app *application) run(mux *http.ServeMux) error {
+func (app *application) run(mux http.Handler) error {
 	srv := &http.Server{
 		Addr:         app.config.addr,
 		Handler:      mux,

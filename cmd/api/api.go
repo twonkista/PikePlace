@@ -24,7 +24,11 @@ func (app *application) mount() http.Handler {
 
 	r.Route("v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
-		r.Get("/list_pools", app.listPoolsHandler)
+		r.Route("/pools", func(r chi.Router) {
+			r.Get("/list", app.listPoolsHandler)
+			r.Get("/open", app.openPoolsHandler)
+			r.Get("/resolved", app.resolvedPoolsHandler)
+		})
 	})
 	// list all pools
 	// list open pools (or list pools with status=open)

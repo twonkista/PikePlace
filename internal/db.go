@@ -36,4 +36,11 @@ func main() {
 		log.Fatalf("Failed to ping DB: %v", err)
 	}
 	fmt.Println("Successfully connected to Neon Postgres database!")
+
+	err = db.AutoMigrate(&User{}, &Pool{}, &Wager{})
+	if err != nil {
+		log.Fatalf("Failed to migrate database: %v", err)
+	}
+	fmt.Println("Database migrated successfully!")
+
 }

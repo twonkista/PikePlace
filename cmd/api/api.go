@@ -7,10 +7,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"gorm.io/gorm"
 )
 
 type application struct {
 	config config
+	db     *gorm.DB
 }
 
 type config struct {
@@ -22,7 +24,7 @@ func (app *application) mount() http.Handler {
 
 	r.Use(middleware.Logger)
 
-	r.Route("v1", func(r chi.Router) {
+	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
 		r.Route("/pools", func(r chi.Router) {
 			r.Get("/list", app.listPoolsHandler)

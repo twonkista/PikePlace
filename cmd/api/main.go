@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	err := godotenv.Load(".env")
+	err := godotenv.Load("C:\\Users\\rkoma\\projects\\PikePlace\\.env")
 	if err != nil {
 		log.Println("No .env file found; relying on environment variables")
 	}
@@ -31,6 +31,7 @@ func main() {
 
 	app := &application{
 		config: cfg,
+		db:     dbConn,
 	}
 
 	mux := app.mount()

@@ -8,12 +8,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateUsers(db *gorm.DB) error {
+func CreateUsers(db *gorm.DB, username string, password string, balance float64, strikes int) error {
 	user := models.User{
-		UserName: "The Big Stein",
-		Password: "financier123",
-		Balance:  600000000,
-		Strikes:  0,
+		UserName: username,
+		Password: password,
+		Balance:  balance,
+		Strikes:  strikes,
 	}
 	result := db.Create(&user)
 

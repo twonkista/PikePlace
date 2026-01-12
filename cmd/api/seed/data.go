@@ -18,7 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := data.CreateUsers(dbConn); err != nil {
+	if err := data.CreateUsers(dbConn, "Joji", "kansaidialect6767", 8000000, 2); err != nil {
 		log.Fatal(err)
 	}
 

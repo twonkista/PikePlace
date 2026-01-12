@@ -1,14 +1,14 @@
-// we are literally making users out of thin fucking air
 package data
 
 import (
 	"fmt"
 
-	"github.com/twonkista/PikePlace/internal/db"
 	"github.com/twonkista/PikePlace/internal/models"
+
+	"gorm.io/gorm"
 )
 
-func createUsers() {
+func CreateUsers(db *gorm.DB) error {
 	user := models.User{
 		UserName: "The Big Stein",
 		Password: "financier123",
@@ -20,4 +20,6 @@ func createUsers() {
 	if result.Error != nil {
 		fmt.Printf("Something went wrong creating user: %v\n", result.Error)
 	}
+
+	return nil
 }

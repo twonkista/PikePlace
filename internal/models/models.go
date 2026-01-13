@@ -21,8 +21,7 @@ type Pool struct {
 	Description string  `gorm:"not null"`
 	CreatorID   uint    `gorm:"not null"`
 	Creator     User    `gorm:"foreignKey:creator_id"`
-	Status      string  `gorm:"not null"`   // e.g., "open", "closed", "resolved"
-	Outcomes    string  `gorm:"type:jsonb"` // JSON array of possible outcomes
+	Status      string  `gorm:"not null"` // e.g., "open", "closed", "resolved"
 	SLTotal     float64 `gorm:"not null;default:0"`
 	SWTotal     float64 `gorm:"not null;default:0"`
 	Outcome     string  `gorm:"not null"` // e.g., "outcome1", "outcome2"

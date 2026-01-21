@@ -24,7 +24,7 @@ type Pool struct {
 	Status      string  `gorm:"not null"` // e.g., "open", "closed", "resolved"
 	SLTotal     float64 `gorm:"not null;default:0"`
 	SWTotal     float64 `gorm:"not null;default:0"`
-	Outcome     string  `gorm:"not null"` // e.g., "outcome1", "outcome2"
+	Outcome     bool  `gorm:"not null"` // e.g., "outcome1", "outcome2"
 }
 
 type Wager struct {

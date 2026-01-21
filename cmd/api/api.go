@@ -32,7 +32,7 @@ func (app *application) mount() http.Handler {
 			r.Get("/resolved", app.resolvedPoolsHandler)
 		})
 		r.Route("/users", func(r chi.Router) {
-			r.Post("/create", app.createUserHandler)
+			//r.Post("/create", app.createUserHandler)
 		})
 	})
 	// list all pools

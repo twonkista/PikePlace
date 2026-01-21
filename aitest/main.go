@@ -16,6 +16,7 @@ func GenerateText(prompt string) (string, error) {
 	client := openai.NewClient(
 		option.WithAPIKey(os.Getenv("OPENAI_API_KEY")), // or set OPENAI_API_KEY in your env
 	)
+
 	resp, err := client.Responses.New(context.TODO(), responses.ResponseNewParams{
 		Model: "gpt-5-nano",
 		Input: responses.ResponseNewParamsInputUnion{OfString: openai.String("Try to be a fair betting assistant that helps users create betting pools and place wagers. " +
@@ -32,9 +33,7 @@ func GenerateText(prompt string) (string, error) {
 }
 
 func main() {
-	out, err := GenerateText("Create a betting pool for ECE 210 exam average score being above 85%.")
-	key := os.Getenv("OPENAI_API_KEY")
-	fmt.Println("OPENAI_API_KEY length =", len(key))
+	out, err := GenerateText("Mitra crash out during the 2008 economic recession?")
 
 	if err != nil {
 		panic(err)

@@ -33,7 +33,7 @@ func GenerateText(prompt string) (string, error) {
 }
 
 func main() {
-	out, err := GenerateText("Mitra crash out during the 2008 economic recession?")
+	out, err := GenerateText("Mithra crash out during the 2008 economic recession?")
 
 	if err != nil {
 		panic(err)

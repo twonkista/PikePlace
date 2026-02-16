@@ -40,6 +40,9 @@ func (app *application) mount() http.Handler {
 			r.Post("/register", app.registrationHandeler)
 			r.Post("/logout", app.logoutHandeler)
 		})
+		r.Route("/userops", func(r chi.Router) {
+			r.Post("/update-balance", app.updateBalanceHandler)
+		})
 	})
 	// create a new pool
 	// place wager

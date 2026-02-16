@@ -20,3 +20,10 @@ func (app *application) listUsersHandler(w http.ResponseWriter, r *http.Request)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonData)
 }
+
+func (app *application) updateBalanceHandler(w http.ResponseWriter, r *http.Request) {
+	// 1. Get UserID from the session/JWT
+	// 2. Get the amount from the request body
+	// 3. Update the 'balance' column in the 'users' table
+	return
+}

@@ -2,7 +2,10 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"time"
+
+	"github.com/twonkista/PikePlace/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,6 +21,12 @@ func Open(dsn string) (*gorm.DB, error) {
 	gdb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info), // dev-friendly logging
 	})
+
+	err = gdb.AutoMigrate(&models.User{}, &models.Pool{}, &models.Wager{})
+	if err != nil {
+		log.Fatal("Migration failed: ", err)
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("gorm open: %w", err)
 	}

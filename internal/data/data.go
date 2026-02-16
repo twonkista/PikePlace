@@ -10,10 +10,10 @@ import (
 
 func CreateUsers(db *gorm.DB, username string, password string, balance float64, strikes int) error {
 	user := models.User{
-		UserName: username,
-		Password: password,
-		Balance:  balance,
-		Strikes:  strikes,
+		UserName:       username,
+		HashedPassword: password,
+		Balance:        balance,
+		Strikes:        strikes,
 	}
 	result := db.Create(&user)
 

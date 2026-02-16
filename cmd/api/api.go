@@ -32,12 +32,15 @@ func (app *application) mount() http.Handler {
 			r.Get("/resolved", app.resolvedPoolsHandler)
 		})
 		r.Route("/users", func(r chi.Router) {
-			//r.Post("/create", app.createUserHandler)
+			//r.Post("/create", app.createUserHandler)v
+			r.Get("/list", app.listUsersHandler)
+		})
+		r.Route("/auth", func(r chi.Router) {
+			r.Post("/login", app.loginHandeler)
+			r.Post("/register", app.registrationHandeler)
+			r.Post("/logout", app.logoutHandeler)
 		})
 	})
-	// list all pools
-	// list open pools (or list pools with status=open)
-	// list resolved pools (or status=resolved)
 	// create a new pool
 	// place wager
 	// cancel wager

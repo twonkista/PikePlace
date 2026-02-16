@@ -21,8 +21,6 @@ func (app *application) listPoolsHandler(w http.ResponseWriter, r *http.Request)
 	// Fetch all pools from the database
 	app.db.Find(&pools)
 
-	// Serialize the pools to JSON and write to response
-	// (Assuming you have a function toJSON for serialization)
 	jsonData, err := json.Marshal(pools)
 	if err != nil {
 		http.Error(w, "Error serializing pools", http.StatusInternalServerError)
@@ -37,8 +35,6 @@ func (app *application) openPoolsHandler(w http.ResponseWriter, r *http.Request)
 	// Fetch all pools from the database
 	app.db.Where("status = ?", "open").Find(&pools)
 
-	// Serialize the pools to JSON and write to response
-	// (Assuming you have a function toJSON for serialization)
 	jsonData, err := json.Marshal(pools)
 	if err != nil {
 		http.Error(w, "Error serializing pools", http.StatusInternalServerError)

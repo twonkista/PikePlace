@@ -5,14 +5,15 @@ import (
 )
 
 type User struct {
-	ID            uint   `gorm:"primaryKey;autoIncrement"`
-	UserName      string `gorm:"uniqueIndex"`
-	Password      string `gorm:"not null"`
-	Balance       float64
-	Strikes       int
-	LockedBalance float64
-	Pools         []Pool  `gorm:"foreignKey:creator_id"`
-	Wagers        []Wager `gorm:"foreignKey:user_id"`
+	ID             uint   `gorm:"primaryKey;autoIncrement"`
+	UserName       string `gorm:"uniqueIndex"`
+	Role           string `gorm:"not null;default:'sheep'"`
+	HashedPassword string `gorm:"column:password;not null" json:"-"`
+	Balance        float64
+	Strikes        int
+	LockedBalance  float64
+	Pools          []Pool  `gorm:"foreignKey:creator_id"`
+	Wagers         []Wager `gorm:"foreignKey:user_id"`
 }
 
 type Pool struct {
@@ -24,7 +25,13 @@ type Pool struct {
 	Status      string  `gorm:"not null"` // e.g., "open", "closed", "resolved"
 	SLTotal     float64 `gorm:"not null;default:0"`
 	SWTotal     float64 `gorm:"not null;default:0"`
-	Outcome     bool  `gorm:"not null"` // e.g., "outcome1", "outcome2"
+	MaxPoolSize float64 `gorm:"not null;default:100"`
+	MaxWager    float64 `gorm:"not null;default:10"`
+	Approved    bool    `gorm:"not null;default:false"`
+	ApprovedAt  time.Time
+	Outcome     bool `gorm:"not null"` // e.g., "outcome1", "outcome2"
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type Wager struct {

@@ -39,6 +39,7 @@ func (app *application) mount() http.Handler {
 			r.Post("/login", app.loginHandeler)
 			r.Post("/register", app.registrationHandeler)
 			r.Post("/logout", app.logoutHandeler)
+			r.Post("/protected", app.protectedHandler)
 		})
 		r.Route("/userops", func(r chi.Router) {
 			r.Post("/update-balance", app.updateBalanceHandler)

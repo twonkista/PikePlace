@@ -59,7 +59,7 @@ func (app *application) loginHandeler(w http.ResponseWriter, r *http.Request) {
 		Name:     "csrf_token",
 		Value:    csrfToken,
 		Expires:  time.Now().Add(12 * time.Hour),
-		HttpOnly: true,
+		HttpOnly: false,
 	})
 
 	user.SessionToken = sessionToken
@@ -114,8 +114,59 @@ func (app *application) registrationHandeler(w http.ResponseWriter, r *http.Requ
 	fmt.Fprintf(w, "User created successfully")
 }
 
+func (app *application) protectedHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		er := http.StatusMethodNotAllowed
+		http.Error(w, "Method NNot Allowed", er)
+		return
+	}
+	if err := app.Authorize(r); err != nil {
+		er := http.StatusUnauthorized
+		http.Error(w, "Unauthorized", er)
+		return
+	}
+
+	username := r.FormValue("username")
+	fmt.Fprintf(w, "Your account is verified welcome to the site: %s", username)
+}
+
 func (app *application) logoutHandeler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Logout handler called")
+	if err := app.Authorize(r); err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session_token",
+		Value:    "",
+		Expires:  time.Now().Add(-1 * time.Hour),
+		HttpOnly: true,
+	})
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "csrf_token",
+		Value:    "",
+		Expires:  time.Now().Add(-1 * time.Hour),
+		HttpOnly: false,
+	})
+
+	var user models.User
+	username := r.FormValue("username")
+	if err := app.db.Where("user_name = ?", username).First(&user).Error; err != nil {
+		log.Printf("Failed to find user %s: %v", username, err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	user.SessionToken = ""
+	user.CSRFToken = ""
+	if err := app.db.Save(&user).Error; err != nil {
+		log.Printf("Failed to clear tokens for user %s: %v", username, err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "Logout successful")
 }
 
 func hashPassword(password string) (string, error) {

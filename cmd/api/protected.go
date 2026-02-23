@@ -5,7 +5,10 @@ import (
 	"net/http"
 )
 
-func (app *application) protectedHandler(w http.ResponseWeiter, r *http.Request) {
+func (app *application) protectedHandler(w http.ResponseWriter, r *http.Request) {
+    ctx := context.WithValue(r.Context(), "userID", user.ID)
+    next.ServeHTTP(w, r.WithContext(ctx))
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         // check session/csrf token here
         // if invalid:

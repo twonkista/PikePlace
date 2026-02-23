@@ -22,8 +22,14 @@ func (app *application) listUsersHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func (app *application) updateBalanceHandler(w http.ResponseWriter, r *http.Request) {
-	// 1. Get UserID from the session/JWT
-	// 2. Get the amount from the request body
-	// 3. Update the 'balance' column in the 'users' table
+	balance, err := strconv.ParseFloat(r.FormValue("balance"), 64)
+
+	if err != nil || balance < 0 || balance > 1000 {
+        http.Error(w, "Invalid balance", http.StatusBadRequest)
+        return
+    }
+
+	userID := r.Context().Value("userID")
+	app.db.Model(&models.User{}).Where("id = ?", userID).Update("balance", balance)
 	return
 }

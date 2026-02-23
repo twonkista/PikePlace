@@ -16,6 +16,7 @@ func GenerateText(prompt string) (string, error) {
 	client := openai.NewClient(
 		option.WithAPIKey(os.Getenv("OPENAI_API_KEY")), // or set OPENAI_API_KEY in your env
 	)
+	fmt.Println("OPENAI_API_KEY length:", len(os.Getenv("OPENAI_API_KEY")))
 
 	resp, err := client.Responses.New(context.TODO(), responses.ResponseNewParams{
 		Model: "gpt-5-nano",

@@ -29,7 +29,7 @@ type Pool struct {
 	SWTotal     float64 `gorm:"not null;default:0"`
 	MaxPoolSize float64 `gorm:"not null;default:100"`
 	MaxWager    float64 `gorm:"not null;default:10"`
-	Approved    bool    `gorm:"not null;default:false"`
+	Approved    string  `gorm:"not null;default:'pending'"` //e.g "approved", "pending", "rejected"
 	ApprovedAt  time.Time
 	Outcome     bool `gorm:"not null"` // e.g., "outcome1", "outcome2"
 	CreatedAt   time.Time

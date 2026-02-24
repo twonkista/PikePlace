@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/twonkista/PikePlace/internal/models"
 )
@@ -25,9 +26,9 @@ func (app *application) updateBalanceHandler(w http.ResponseWriter, r *http.Requ
 	balance, err := strconv.ParseFloat(r.FormValue("balance"), 64)
 
 	if err != nil || balance < 0 || balance > 1000 {
-        http.Error(w, "Invalid balance", http.StatusBadRequest)
-        return
-    }
+		http.Error(w, "Invalid balance", http.StatusBadRequest)
+		return
+	}
 
 	userID := r.Context().Value("userID")
 	app.db.Model(&models.User{}).Where("id = ?", userID).Update("balance", balance)

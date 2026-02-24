@@ -42,7 +42,7 @@ func (app *application) mount() http.Handler {
 			r.Post("/protected", app.protectedHandler)
 		})
 		r.Route("/userops", func(r chi.Router) {
-			r.Use(app.protectedHandler)
+			r.Use(app.protectedCheckHandler)
 			r.Post("/update-balance", app.updateBalanceHandler)
 		})
 	})

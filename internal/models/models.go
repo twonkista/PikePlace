@@ -10,7 +10,7 @@ type User struct {
 	Role           string  `gorm:"not null;default:'sheep'"`
 	HashedPassword string  `gorm:"column:password;not null" json:"-"`
 	SessionToken   string  `gorm:"not null;default:''" json:"-"`
-	CSRFToken      string  `gorm:"not null;default:''" json:"-"`
+	CSRFToken      string  `gorm:"column:csrf_token;not null;default:''" json:"-"`
 	Balance        float64 `gorm:"not null;default:1000"`
 	Strikes        int
 	LockedBalance  float64 `gorm:"not null;default:0"`

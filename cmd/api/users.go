@@ -30,7 +30,16 @@ func (app *application) updateBalanceHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	userID := r.Context().Value("userID")
-	app.db.Model(&models.User{}).Where("id = ?", userID).Update("balance", balance)
-	return
+	userID, ok := r.Context().Value("userID").(uint)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	result := app.db.Model(&models.User{}).Where("id = ?", userID).Update("balance", balance)
+	if result.Error != nil {
+		http.Error(w, "Failed to update balance", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }

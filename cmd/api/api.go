@@ -45,6 +45,11 @@ func (app *application) mount() http.Handler {
 			r.Use(app.protectedCheckHandler)
 			r.Post("/update-balance", app.updateBalanceHandler)
 		})
+		r.Route("/admin", func(r chi.Router) {
+			r.Use(app.adminHandler)
+			//r.Get("/pendingpools", app.listPendingPoolsHandler)
+			//r.Post("/approve-pool", app.approvePoolHandler)
+		})
 	})
 	// create a new pool
 	// place wager

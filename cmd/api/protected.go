@@ -35,29 +35,24 @@ func (app *application) protectedCheckHandler(next http.Handler) http.Handler {
 
 func (app *application) adminHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		csrfToken := r.Header.Get("csrf-token")
-		log.Printf("Token received: %s", csrfToken)
+		cookie, err := r.Cookie("session_token")
 
-		if csrfToken == "" {
-			log.Printf("Token is empty")
+		if cookie == "" {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 
 		var user models.User
-		if err := app.db.Where("csrf_token = ?", csrfToken).First(&user).Error; err != nil {
-			log.Printf("DB lookup failed: %v", err)
-			http.Error(w, "Invalid CSRF token", http.StatusUnauthorized)
+		if err := app.db.Where("session_token = ?", cookie).First(&user).Error; err != nil {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 
 		if user.Role != "admin" {
-			log.Printf("User %d is not an admin", user.ID)
 			http.Error(w, "Forbidden", http.StatusForbidden)
 			return
 		}
 
-		log.Printf("User found: %d", user.ID)
 		ctx := context.WithValue(r.Context(), "userID", user.ID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

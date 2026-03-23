@@ -36,14 +36,13 @@ func (app *application) protectedCheckHandler(next http.Handler) http.Handler {
 func (app *application) adminHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("session_token")
-
-		if cookie == "" {
+		if err != nil {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 
 		var user models.User
-		if err := app.db.Where("session_token = ?", cookie).First(&user).Error; err != nil {
+		if err := app.db.Where("session_token = ?", cookie.Value).First(&user).Error; err != nil {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
@@ -54,6 +53,7 @@ func (app *application) adminHandler(next http.Handler) http.Handler {
 		}
 
 		ctx := context.WithValue(r.Context(), "userID", user.ID)
+		ctx = context.WithValue(ctx, "username", user.UserName)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

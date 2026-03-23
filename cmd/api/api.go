@@ -33,7 +33,6 @@ func (app *application) mount() http.Handler {
 			r.Get("/pendingpools", app.listPendingPoolsHandler)
 		})
 		r.Route("/users", func(r chi.Router) {
-			//r.Post("/create", app.createUserHandler)
 			r.Get("/list", app.listUsersHandler)
 		})
 		r.Route("/auth", func(r chi.Router) {
@@ -45,6 +44,7 @@ func (app *application) mount() http.Handler {
 		r.Route("/userops", func(r chi.Router) {
 			r.Use(app.protectedCheckHandler)
 			r.Post("/update-balance", app.updateBalanceHandler)
+			r.Post("/create-pool", app.createPoolHandler)
 		})
 		r.Route("/admin", func(r chi.Router) {
 			r.Use(app.adminHandler)

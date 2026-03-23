@@ -63,3 +63,13 @@ func (app *application) resolvedPoolsHandler(w http.ResponseWriter, r *http.Requ
 // func (app *application) createNewPoolHandler(w http.ResponseWriter, r *http.Request) {
 // 	w.Write([]byte("shi"))
 // }
+
+func (app *application) createPoolHandler(w http.ResponseWriter, r *http.Request) {
+	title := r.FormValue("title")
+	description := r.FormValue("description")
+
+	if title == "" || description == "" {
+		http.Error(w, "Title and description are required", http.StatusBadRequest)
+		return
+	}
+}

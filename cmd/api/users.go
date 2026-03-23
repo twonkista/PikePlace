@@ -8,6 +8,17 @@ import (
 	"github.com/twonkista/PikePlace/internal/models"
 )
 
+// type Pool struct {
+// 	ID          uint    "json:\"id\""
+// 	Title       string  "json:\"title\""
+// 	Description string  "json:\"description\""
+// 	CreatorID   uint    "json:\"creator_id\""
+// 	Status      string  "json:\"status\""
+// 	SLTotal     float64 "json:\"sl_total\""
+// 	SWTotal     float64 "json:\"sw_total\""
+// 	Outcome     bool    "json:\"outcome\""
+// }
+
 func (app *application) listUsersHandler(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
 	// Fetch all users from the database

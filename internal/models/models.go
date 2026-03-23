@@ -30,6 +30,7 @@ type Pool struct {
 	MaxPoolSize float64 `gorm:"not null;default:100"`
 	MaxWager    float64 `gorm:"not null;default:10"`
 	Approved    string  `gorm:"not null;default:'pending'"` //e.g "approved", "pending", "rejected"
+	ApprovedBy  string  `gorm:"not null;default:''"`        // Admin username who approved/rejected
 	ApprovedAt  time.Time
 	Outcome     bool `gorm:"not null"` // e.g., "outcome1", "outcome2"
 	CreatedAt   time.Time
